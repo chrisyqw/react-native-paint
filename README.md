@@ -6,6 +6,8 @@ Minimal implementation of a "Paint" app using React Native and Exponent
   <img src="http://i.imgur.com/XzR65hx.gif">
 </p>
 
+https://exp.host/@test123/rmotr-paint
+
 ## Setting up project dependencies
 
 ```bash
