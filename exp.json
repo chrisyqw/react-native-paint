@@ -1,21 +1,28 @@
 {
-  "name": "signature-example",
-  "description": "An empty new project",
-  "slug": "signature-example",
+  "name": "rmotr-paint",
+  "description": "Minimal implementation of a 'Paint' application using React Native and Exponent",
+  "slug": "rmotr-paint",
   "sdkVersion": "10.0.0",
   "version": "1.0.0",
   "orientation": "portrait",
-  "primaryColor": "#cccccc",
-  "iconUrl": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
+  "primaryColor": "#3A4767",
+  "iconUrl": "https://s13.postimg.org/wflosfalj/logo.png",
   "notification": {
-    "iconUrl": "https://s3.amazonaws.com/exp-us-standard/placeholder-push-icon-blue-circle.png",
-    "color": "#000000"
+    "iconUrl": "https://s13.postimg.org/wflosfalj/logo.png",
+    "color": "#000000",
+    "androidMode": "default",
+    "androidCollapsedTitle": "#{unread_notifications} new interactions"
   },
   "loading": {
-    "iconUrl": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
-    "hideExponentText": false
+    "iconUrl": "https://s13.postimg.org/wflosfalj/logo.png",
+    "backgroundImageUrl": "http://i.imgur.com/zsnPy5z.png",
+    "backgroundColor": "#FFF",
+    "hideExponentText": true
   },
+  "appKey": "main",
+  "androidStatusBarColor": "#000000",
+  "androidHideExponentNotificationInShellApp": "true",
   "packagerOpts": {
-    "assetExts": ["ttf", "mp4"]
+    "assetExts": ["ttf"]
   }
 }
