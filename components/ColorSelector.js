@@ -36,7 +36,8 @@ let styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderBottomWidth: 1,
     borderColor: '#DDD',
-    padding: 10
+    paddingVertical: 5,
+    paddingHorizontal: 10
   },
 
   option: {

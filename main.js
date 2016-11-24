@@ -1,17 +1,8 @@
 import Exponent from 'exponent';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-
-import {
-  createRouter,
-  NavigationProvider,
-  StackNavigation,
-} from '@exponent/ex-navigation';
-
+import { Platform, StatusBar, Text,
+         View, StyleSheet } from 'react-native';
+import { createRouter, NavigationProvider, StackNavigation } from '@exponent/ex-navigation';
 import SignatureScreen from './screens/SignatureScreen';
 
 const Router = createRouter(() => ({
@@ -21,11 +12,16 @@ const Router = createRouter(() => ({
 class App extends React.Component {
   render() {
     return (
-      <NavigationProvider router={Router}>
-        <StackNavigation
-          initialRoute={Router.getRoute('signature')}
-        />
-      </NavigationProvider>
+      <View style={styles.container}>
+        <NavigationProvider router={Router}>
+          <StackNavigation
+            initialRoute={Router.getRoute('signature')}
+          />
+        </NavigationProvider>
+
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
+      </View>
     );
   }
 }
@@ -33,9 +29,7 @@ class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#EEE'
   },
 });
 

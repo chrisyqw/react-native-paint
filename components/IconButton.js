@@ -1,36 +1,30 @@
-/**
- * @providesModule IconButton
- */
-
-'use strict';
-
 import React from 'react';
-
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-
-import { MaterialIcons } from '@exponent/vector-icons';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FontAwesome } from '@exponent/vector-icons';
 
 class IconButton extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity style={styles.iconButton} onPress={this.props.onPress}>
-        <MaterialIcons name={this.props.name} size={32} style={styles.icon} />
+      <TouchableOpacity
+        style={styles.iconButton}
+        onPress={this.props.onPress}
+      >
+        <FontAwesome
+          name={this.props.name}
+          style={styles.icon}
+        />
       </TouchableOpacity>
     )
   }
 }
 
-let iconSize = 48;
-
 let styles = StyleSheet.create({
   icon: {
-    marginLeft: 24
+    color: '#999',
+    fontSize: 22,
+    margin: 5
   },
 });
 
-module.exports = IconButton;
+export default IconButton;

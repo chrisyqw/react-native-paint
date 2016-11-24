@@ -1,35 +1,45 @@
 import React from 'react';
-import { Dimensions, Image, StyleSheet,
-         Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, View,
+         Text, StyleSheet } from 'react-native';
 import { takeSnapshotAsync } from 'exponent';
-
+import Colors from '../constants/Colors';
 import SignatureView from '../components/SignatureView';
-import IconButton from '../components/IconButton';
+import Header from '../components/Header';
 import ColorSelector from '../components/ColorSelector';
 
 export default class SignatureScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      visible: false
-    },
-  }
+  constructor(props, context) {
+    super(props, context);
 
-  state = {
-    result: null,
-    color: 'blue'
+    this.state = {
+      result: null,
+      color: Colors.color16,
+      strokeWidth: 4,
+      donePaths: []
+    };
+
+    this._undo = this._undo.bind(this);
+    this._setDonePaths = this._setDonePaths.bind(this);
   }
 
   _cancel = () => {
-
+    this.setState({ donePaths: [] });
   }
 
   _undo = () => {
-
+    this.setState({ donePaths: this.state.donePaths.slice(0,-1) });
   }
 
   _save = async () => {
-    let result = await takeSnapshotAsync(this._signatureView, {format: 'png', result: 'base64', quality: 1.0});
+    let result = await takeSnapshotAsync(
+      this._signatureView,
+      {format: 'png', result: 'base64', quality: 1.0}
+    );
     this.setState({result});
+  }
+
+  _setDonePaths = donePaths => {
+    this.setState({ donePaths });
   }
 
   _changeColor = color => {
@@ -38,22 +48,25 @@ export default class SignatureScreen extends React.Component {
 
   render() {
     return (
-      <View style={{
-        flex: 1,
-        alignItems: 'stretch',
-        backgroundColor: 'rgba(0,0,0,0.1)'
-      }}>
-        {this._renderHeader()}
+      <View style={styles.container}>
+        <Header
+          save={this._save}
+          undo={this._undo}
+          cancel={this._cancel}
+        />
 
         <ColorSelector onPress={this._changeColor} />
 
         <View style={{ alignItems: 'center' }}>
           <SignatureView
             ref={view => { this._signatureView = view; }}
+            donePaths={this.state.donePaths}
+            setDonePaths={this._setDonePaths}
             containerStyle={{backgroundColor: '#FFF', marginTop: 10}}
             width={Dimensions.get('window').width - 20}
             height={Dimensions.get('window').width - 20}
             color={this.state.color}
+            strokeWidth={this.state.strokeWidth}
           />
         </View>
 
@@ -61,58 +74,39 @@ export default class SignatureScreen extends React.Component {
           <Image
             source={{uri: `data:image/png;base64,${this.state.result}`}}
             style={{
-              width: Dimensions.get('window').width / 2,
-              height: Dimensions.get('window').width / 2
+              width: Dimensions.get('window').width / 3,
+              height: Dimensions.get('window').width / 3,
+              margin: 10
             }}
           />
         )}
+
+        <Text style={styles.footer}>
+          Powered by Rmotr. Made by @brentvatne.
+        </Text>
       </View>
     );
   }
-
-  _renderHeader() {
-    return (
-      <View style={{
-        height: 50,
-        flexDirection: 'row',
-        backgroundColor: 'blue'
-      }}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <IconButton
-              onPress={this._cancel}
-              name="cancel"
-            />
-          </View>
-          <View style={styles.headerRight}>
-            <IconButton
-              onPress={this._undo}
-              name="undo"
-            />
-            <IconButton
-              onPress={this._save}
-              name="done"
-            />
-          </View>
-        </View>
-      </View>
-    )
-  }
 }
 
+SignatureView.route = {
+  navigationBar: {
+    visible: false
+  }
+};
+
 let styles = StyleSheet.create({
-  header: {
-    paddingTop: 16,
+  container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'stretch',
+    backgroundColor: 'rgba(0,0,0,0.1)'
   },
-  headerRight: {
-    flexDirection: 'row',
-    marginRight: 8 + 12,
-  },
-  headerLeft: {
-    flexDirection: 'row',
+
+  footer: {
+    color: '#555',
+    fontSize: 12,
+    position: 'absolute',
+    bottom: 5,
+    right: 10
   }
 });

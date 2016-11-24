@@ -3,14 +3,11 @@ import { View, PanResponder, StyleSheet } from 'react-native';
 import Svg, { G, Surface, Path } from 'react-native-svg';
 
 export default class SignatureView extends React.Component {
-
   constructor(props, context) {
     super(props, context);
     this.state = {
       currentMax: 0,
       currentPoints: [],
-      donePaths: [],
-      newPaths: [],
       reaction: new Reaction(),
     };
 
@@ -29,7 +26,7 @@ export default class SignatureView extends React.Component {
     newCurrentPoints.push({x, y});
 
     this.setState({
-      donePaths: this.state.donePaths,
+      donePaths: this.props.donePaths,
       currentPoints: newCurrentPoints,
       currentMax: this.state.currentMax
     });
@@ -44,7 +41,7 @@ export default class SignatureView extends React.Component {
   }
 
   onResponderRelease() {
-    let newPaths = this.state.donePaths;
+    let newPaths = this.props.donePaths;
     if (this.state.currentPoints.length > 0) {
       // Cache the shape object so that we aren't testing
       // whether or not it changed; too many components?
@@ -53,7 +50,7 @@ export default class SignatureView extends React.Component {
           key={this.state.currentMax}
           d={this.state.reaction.pointsToSvg(this.state.currentPoints)}
           stroke={this.props.color}
-          strokeWidth={4}
+          strokeWidth={this.props.strokeWidth}
           fill="none"
         />
       );
@@ -62,10 +59,11 @@ export default class SignatureView extends React.Component {
     this.state.reaction.addGesture(this.state.currentPoints);
 
     this.setState({
-      donePaths: newPaths,
       currentPoints: [],
       currentMax: this.state.currentMax + 1,
     });
+
+    this.props.setDonePaths(newPaths);
   }
 
   _onLayoutContainer = (e) => {
@@ -83,14 +81,19 @@ export default class SignatureView extends React.Component {
         ]}>
 
         <View {...this._panResponder.panHandlers}>
-          <Svg style={styles.drawSurface} width={this.props.width} height={this.props.height}>
+          <Svg
+            style={styles.drawSurface}
+            width={this.props.width}
+            height={this.props.height}
+          >
             <G>
-              {this.state.donePaths}
+              {this.props.donePaths}
               <Path
                 key={this.state.currentMax}
                 d={this.state.reaction.pointsToSvg(this.state.currentPoints)}
                 stroke={this.props.color}
-                strokeWidth={4}
+                strokeWidth={this.props.strokeWidth - 1}
+                strokeOpacity={0.5}
                 fill="none"
               />
             </G>
@@ -119,7 +122,7 @@ class Reaction {
 
   setOffset(options) {
     this._offsetX = options.x;
-    this._offsetY = options.y;
+    this._offsetY = options.y + 140;
   }
 
   pointsToSvg(points) {
