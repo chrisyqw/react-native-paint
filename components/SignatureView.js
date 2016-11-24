@@ -1,15 +1,6 @@
 import React from 'react';
-import {
-  View,
-  PanResponder,
-  StyleSheet,
-} from 'react-native';
-
-import Svg, {
-  G,
-  Surface,
-  Path
-} from 'react-native-svg';
+import { View, PanResponder, StyleSheet } from 'react-native';
+import Svg, { G, Surface, Path } from 'react-native-svg';
 
 export default class SignatureView extends React.Component {
 
@@ -61,7 +52,7 @@ export default class SignatureView extends React.Component {
         <Path
           key={this.state.currentMax}
           d={this.state.reaction.pointsToSvg(this.state.currentPoints)}
-          stroke="#000000"
+          stroke={this.props.color}
           strokeWidth={4}
           fill="none"
         />
@@ -90,6 +81,7 @@ export default class SignatureView extends React.Component {
           this.props.containerStyle,
           {width: this.props.width, height: this.props.height}
         ]}>
+
         <View {...this._panResponder.panHandlers}>
           <Svg style={styles.drawSurface} width={this.props.width} height={this.props.height}>
             <G>
@@ -97,7 +89,7 @@ export default class SignatureView extends React.Component {
               <Path
                 key={this.state.currentMax}
                 d={this.state.reaction.pointsToSvg(this.state.currentPoints)}
-                stroke="#000000"
+                stroke={this.props.color}
                 strokeWidth={4}
                 fill="none"
               />
@@ -198,6 +190,14 @@ class Reaction {
 
 let styles = StyleSheet.create({
   drawContainer: {
+    borderWidth: 1,
+    borderRadius: 2,
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
   },
   drawSurface: {
     backgroundColor: 'transparent',

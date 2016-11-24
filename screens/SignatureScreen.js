@@ -1,28 +1,22 @@
 import React from 'react';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  takeSnapshotAsync,
-} from 'exponent';
+import { Dimensions, Image, StyleSheet,
+         Text, TouchableOpacity, View } from 'react-native';
+import { takeSnapshotAsync } from 'exponent';
 
 import SignatureView from '../components/SignatureView';
 import IconButton from '../components/IconButton';
+import ColorSelector from '../components/ColorSelector';
 
 export default class SignatureScreen extends React.Component {
   static route = {
     navigationBar: {
-      visible: false,
+      visible: false
     },
   }
 
   state = {
     result: null,
+    color: 'blue'
   }
 
   _cancel = () => {
@@ -38,43 +32,63 @@ export default class SignatureScreen extends React.Component {
     this.setState({result});
   }
 
+  _changeColor = color => {
+    this.setState({ color: color });
+  }
+
   render() {
     return (
-      <View style={{flex: 1}}>
-        <SignatureView
-          ref={view => { this._signatureView = view; }}
-          containerStyle={{backgroundColor: 'rgba(0,0,0,0.01)', marginTop: 60}}
-          width={Dimensions.get('window').width}
-          height={200}
-        />
+      <View style={{
+        flex: 1,
+        alignItems: 'stretch',
+        backgroundColor: 'rgba(0,0,0,0.1)'
+      }}>
+        {this._renderHeader()}
+
+        <ColorSelector onPress={this._changeColor} />
+
+        <View style={{ alignItems: 'center' }}>
+          <SignatureView
+            ref={view => { this._signatureView = view; }}
+            containerStyle={{backgroundColor: '#FFF', marginTop: 10}}
+            width={Dimensions.get('window').width - 20}
+            height={Dimensions.get('window').width - 20}
+            color={this.state.color}
+          />
+        </View>
 
         {this.state.result && (
           <Image
             source={{uri: `data:image/png;base64,${this.state.result}`}}
-            style={{width: Dimensions.get('window').width / 2, height: 100}}
+            style={{
+              width: Dimensions.get('window').width / 2,
+              height: Dimensions.get('window').width / 2
+            }}
           />
         )}
-
-        {this._renderHeader()}
       </View>
     );
   }
 
   _renderHeader() {
     return (
-      <View style={{position: 'absolute', top: 0, left: 0, right:0, height: 50}}>
+      <View style={{
+        height: 50,
+        flexDirection: 'row',
+        backgroundColor: 'blue'
+      }}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <IconButton
               onPress={this._cancel}
               name="cancel"
-              />
-            </View>
+            />
+          </View>
           <View style={styles.headerRight}>
             <IconButton
               onPress={this._undo}
               name="undo"
-              />
+            />
             <IconButton
               onPress={this._save}
               name="done"
