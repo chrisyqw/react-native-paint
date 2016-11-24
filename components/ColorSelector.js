@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text,
-         TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
 
 class ColorSelector extends React.Component {
@@ -11,9 +10,9 @@ class ColorSelector extends React.Component {
     return allColors.map(color => (
       <TouchableOpacity
         key={color}
-        style={[styles.option, {backgroundColor: Colors[color]}]}
-        onPress={() => this.props.onPress(Colors[color])}>
-      </TouchableOpacity>
+        style={[styles.option, { backgroundColor: Colors[color] }]}
+        onPress={() => this.props.onPress(Colors[color])}
+      />
     ));
   }
 
@@ -22,11 +21,9 @@ class ColorSelector extends React.Component {
       <View style={styles.container}>
         {this._renderOptions()}
       </View>
-    )
+    );
   }
 }
-
-let iconSize = 48;
 
 let styles = StyleSheet.create({
   container: {

@@ -26,7 +26,7 @@ class Header extends React.Component {
           />
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -35,7 +35,7 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#EEE',
     paddingTop: 18,
-    paddingBottom: 5,
+    paddingBottom: 5
   },
 
   buttonsContainer: {
@@ -51,7 +51,7 @@ let styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '900',
     marginRight: 20
-  },
+  }
 });
 
 export default Header;
